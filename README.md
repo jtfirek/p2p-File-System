@@ -1,6 +1,8 @@
-# Distributed Decentralized File System
+# IPFSish project 
 
-A distributed decentralized file system project implemented in Rust. This project aims to provide a highly scalable, fault-tolerant, and secure file system that allows users to store and retrieve data in a decentralized manner.
+Implementing a distributed file system like IPFS using rust and libp2p to learn more about how to actually build peer to peer networks.
+
+If you are looking through project and see something you would do differently or things I could to keep building on this project please make a github issue so I can keep learning!
 
 ## Project Structure
 
