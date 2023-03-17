@@ -9,7 +9,27 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "hello"
+name = "dfs_api"
+version = "0.1.0"
+
+[[package]]
+name = "dfs_cli"
+version = "0.1.0"
+
+[[package]]
+name = "dfs_core"
+version = "0.1.0"
+
+[[package]]
+name = "dfs_network"
+version = "0.1.0"
+
+[[package]]
+name = "dfs_storage"
+version = "0.1.0"
+
+[[package]]
+name = "dfs_thread_pool"
 version = "0.1.0"
 dependencies = [
  "log",

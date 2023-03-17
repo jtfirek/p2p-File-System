@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "dfs_core",
+    "dfs_storage",
+    "dfs_network",
+    "dfs_api",
+    "dfs_cli",
+    "dfs_thread_pool"
+]
