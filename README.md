@@ -1,6 +1,6 @@
-# Centralized Server Project
+# Multithreaded Centralized Server Project
 
-The Centralized Server Project is a Rust-based project that I am doing a a first step to building a Peer to Peer Distributed File System.
+The Centralized Server Project is a Rust-based project that I am doing a a first step to building a Peer to Peer Distributed File System. 
 
 If you have any suggestions or feedback on how to improve the project or things you would do differently, please create a GitHub issue to share your thoughts.
 
