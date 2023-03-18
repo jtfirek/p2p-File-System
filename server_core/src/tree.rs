@@ -1,7 +1,7 @@
 
-/// A generic tree node that holds a value of type `T` and a list of its children.
+/// A generic tree node that holds data of type `T` and a list of its children.
 pub struct TreeNode<T> {
-    pub value: T,
+    pub data: T,
     pub children: Vec<TreeNode<T>>,
 }
 
@@ -15,10 +15,10 @@ impl<T> TreeNode<T> {
     ///
     /// # Returns
     ///
-    /// A new `TreeNode` instance with the given value, a unique identifier, and no children.
-    pub fn new(value: T) -> Self {
+    /// A new `TreeNode` instance with the given data and no children.
+    pub fn new(data: T) -> Self {
         TreeNode {
-            value,
+            data,
             children: Vec::new(),
         }
     }

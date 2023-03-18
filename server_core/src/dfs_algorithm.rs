@@ -1,6 +1,5 @@
 use crate::tree::TreeNode;
 use std::cmp::PartialEq;
-use std::sync::{Arc, Mutex};
 
 pub fn dfs<T: PartialEq>(root: &TreeNode<T>, target: &TreeNode<T> ) -> bool where TreeNode<T>: PartialEq {
     if *root == *target {
