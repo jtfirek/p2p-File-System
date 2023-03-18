@@ -1,2 +1,2 @@
-mod tree;
-mod dfs_algorithm;
+pub mod tree;
+pub mod dfs_algorithm;
