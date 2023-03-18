@@ -1,19 +1,19 @@
-# IPFSish project 
+# Centralized Server Project
 
-Implementing a distributed file system like IPFS using rust and libp2p to learn more about how to actually build peer to peer networks.
+The Centralized Server Project is a Rust-based project that I am doing a a first step to building a Peer to Peer Distributed File System.
 
-If you are looking through project and see something you would do differently or things I could to keep building on this project please make a github issue so I can keep learning!
+If you have any suggestions or feedback on how to improve the project or things you would do differently, please create a GitHub issue to share your thoughts.
 
 ## Project Structure
 
-The project is organized into several crates, each focusing on a specific aspect of the file system:
+The project is organized into several crates, each focusing on a specific aspect of the file server:
 
-- `dfs_core`: The core functionality of the file system, including the primary data structures and algorithms for the storage layer.
-- `dfs_storage`: Handles the actual storage of data, such as writing to and reading from the disk. This crate manages data persistence, caching, and other low-level storage operations.
-- `dfs_network`: Manages the networking aspect of the file system, using libp2p for peer discovery, connection establishment, and data exchange between peers.
-- `dfs_api`: Exposes a high-level API for interacting with the file system, allowing users or other applications to perform operations like creating files, reading files, and listing directories.
-- `dfs_cli`: Provides a command-line interface for users to interact with the file system, using the `dfs_api` crate to perform operations and display results.
-- `dfs_thread_pool`: A utility crate that provides a thread pool implementation to efficiently manage concurrent tasks in other parts of the system.
+- `server_core`: The core functionality of the file server, including the primary data structures and algorithms for the storage layer.
+- `server_storage`: Handles the actual storage of data, such as writing to and reading from the disk. This crate manages data persistence, caching, and other low-level storage operations.
+- `server_network`: Manages the networking aspect of the file server, using Rust's standard networking libraries for client-server communication and data exchange.
+- `server_api`: Exposes a high-level API for interacting with the file server, allowing users or other applications to perform operations like creating files, reading files, and listing directories.
+- `server_cli`: Provides a command-line interface for users to interact with the file server, using the `server_api` crate to perform operations and display results.
+- `server_thread_pool`: A utility crate that provides a thread pool implementation to efficiently manage concurrent tasks in other parts of the system.
 
 ## Getting Started
 
