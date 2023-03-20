@@ -23,3 +23,9 @@ impl<T> TreeNode<T> {
         }
     }
 }
+
+impl<T: PartialEq> PartialEq for TreeNode<T> {
+    fn eq(&self, other: &Self) -> bool {
+        self.data == other.data
+    }
+}

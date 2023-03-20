@@ -1,8 +1,7 @@
 #[cfg(test)]
 mod tests {
-    use crate::tree::TreeNode;
-    use crate::server_core::dfs_algorithm::dfs;
-
+    use server_core::tree::TreeNode;
+    use server_core::dfs_algorithm::dfs;
     #[test]
     fn test_tree_node_creation() {
         let data = 42;
