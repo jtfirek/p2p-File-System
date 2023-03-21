@@ -29,3 +29,12 @@ impl<T: PartialEq> PartialEq for TreeNode<T> {
         self.data == other.data
     }
 }
+
+impl<T: Clone> Clone for TreeNode<T> {
+    fn clone(&self) -> Self {
+        TreeNode {
+            data: self.data.clone(),
+            children: self.children.clone(),
+        }
+    }
+}
