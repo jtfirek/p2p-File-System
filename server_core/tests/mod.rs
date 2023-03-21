@@ -28,6 +28,6 @@ mod tests {
         let target2 = TreeNode::new(5);
 
         assert_eq!(dfs(&root, &target1).unwrap().data, 3);
-        assert_eq!(dfs(&root, &target2).unwrap(), None);
+        assert_eq!(dfs(&root, &target2), None);
     }
 }

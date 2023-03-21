@@ -1,5 +1,6 @@
 
 /// A generic tree node that holds data of type `T` and a list of its children.
+#[derive(Debug)]
 pub struct TreeNode<T> {
     pub data: T,
     pub children: Vec<TreeNode<T>>,
