@@ -17,9 +17,9 @@ the `dfs_storage` crate handles the actual storage of data, such as writing to a
 The three structs are `FileMetadata`, `DirectoryMetadata`, and `DataBlock`. All structs have a `cid` generated from the data block's content using the SHA2-256 hash function to be used in content based addressing.
 
 ### Node Hierarchy and Relationships
-`DirectoryMetadata` nodes represent directories in the file system. They can have both `FileMetadata` and `DirectoryMetadata` structs as children.
-`FileMetadata` nodes represent files in the file system. They can only have `DataBlock` structs as children. Each `DataBlock` child represents a portion of the file's content. The file's content can be reconstructed by concatenating the data from all of its associated `DataBlock` nodes in the correct order.
-`DataBlock` nodes represent individual data blocks in the file system. They cannot have any children. `DataBlock`vnodes are the lowest level in the hierarchy and only store actual data bytes.
+- `DirectoryMetadata` nodes represent directories in the file system. They can have both `FileMetadata` and `DirectoryMetadata` structs as children.
+- `FileMetadata` nodes represent files in the file system. They can only have `DataBlock` structs as children. Each `DataBlock` child represents a portion of the file's content. The file's content can be reconstructed by concatenating the data from all of its associated `DataBlock` nodes in the correct order.
+- `DataBlock` nodes represent individual data blocks in the file system. They cannot have any children. `DataBlock`vnodes are the lowest level in the hierarchy and only store actual data bytes.
 
 
 - `dfs_network`: Manages the networking aspect of the file system, using libp2p for peer discovery, connection establishment, and data exchange between peers.
