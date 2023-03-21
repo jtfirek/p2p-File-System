@@ -1,63 +1,64 @@
 use multihash::{Code, MultihashDigest};
 use std::time::SystemTime;
 
-// Here I define the structure of each type of node that can be stored in the file system tree
+type CID = Vec<u8>;
+
+// Here I define the structure of each type of block that can be stored in the file system tree
 pub enum Metadata {
-    Directory(DirectoryMetadata),
-    DataBlock(DataBlock),
+    Directory {
+        cid: CID,
+        directory_name: Option<String>,
+        created: SystemTime,
+        size: u64, // represent the number of files in the directory
+        entries: Vec<CID>,
+    },
+    File {
+        cid: CID,
+        file_name: Option<String>,
+        created: SystemTime,
+        size: u64, // represent the number of datablocks in the file
+        data_blocks: Vec<CID>,
+    },
+    DataBlock {
+        cid: CID,
+        data: Vec<u8>, // binary data stored in an array of bytes 
+    },
 }
 
-pub struct FileMetadata {
-    cid: Vec<u8>,
-    size: u64,
-    file_name: Option<String>,
-    content_type: Option<String>,
-    created: SystemTime,
-    modified: SystemTime,
-    accessed: SystemTime,
+// contructor methods that also calculate the CID of the block for each type of block
+impl DirectoryMetadata {
+    pub fn new(directory_name: Option<String>) -> Self {
+        let now = SystemTime::now();
+        let mut directory_metadata = Metadata::Directory {
+            cid: vec![],
+            directory_name,
+            created: now,
+            size: 0,
+            entries: Vec<CID>::new(),
+        };
+        let encoded = bincode::serialize(&directory_metadata).unwrap();
+        let cid = Code::Sha2_256.digest(&encoded).into_bytes();
+        directory_metadata.cid = cid;
+        directory_metadata
+    }
 }
 
 impl FileMetadata {
-    pub fn new(data: &[u8], file_name: Option<String>, content_type: Option<String>) -> Self {
-        let cid = Code::Sha2_256.digest(data).to_bytes();
+    pub fn new( file_name: Option<String>, data_blocks: Vec<CID>) -> Self {
+        let cid = Code::Sha2_256.digest.to_bytes();
         let now = SystemTime::now();
-        FileMetadata {
-            cid,
-            size: data.len() as u64,
+        let mut file_meta = FileMetadata {
+            cid: vec![],
             file_name,
-            content_type,
             created: now,
-            modified: now,
-            accessed: now,
-        }
+            size: data_blocks.len() as u64,
+            data_blocks,
+        };
+        let encoded = bincode::serialize(&file_metadata).unwrap();
+        let cid = Code::Sha2_256.digest(&encoded).into_bytes();
+        file_metadata.cid = cid;
+        file_metadata
     }
-}
-
-pub struct DirectoryMetadata {
-    cid: Vec<u8>,
-
-    created: SystemTime,
-    modified: SystemTime,
-    accessed: SystemTime,
-}
-
-impl DirectoryMetadata {
-    pub fn new(data: &[u8]) -> Self {
-        let cid = Code::Sha2_256.digest(data).to_bytes();
-        let now = SystemTime::now();
-        DirectoryMetadata {
-            cid,
-            entries: Vec::new(),
-            created: now,
-            modified: now,
-            accessed: now,
-        }
-    }
-}
-
-pub struct DataBlock {
-    cid: Vec<u8>,
-    data: Vec<u8>,
 }
 
 impl DataBlock {
@@ -69,71 +70,3 @@ impl DataBlock {
         }
     }
 }
-
-
-// Implementing methods for the Tree node structure that are specific to the file system
-impl PartialEq for TreeNode<Metadata> {
-    fn eq(&self, other: &Self) -> bool {
-        self.data.cid == other.data.cid
-    }
-
-    /// Adds a child to the current node.
-    ///
-    /// # Parameters
-    ///
-    /// * `parent` - The existing node in the tree that we are adding the child to.
-    /// 
-    /// * `child` - The new node that we are adding to the tree.
-    ///
-    /// # Returns
-    ///
-    /// * `Result<(), String>` - Returns an error if request did not follow node hierachy.
-
-}
-
-/// Adds a child to the current node.
-///
-/// # Parameters
-///
-/// * `parent` - The existing node in the tree that we are adding the child to.
-/// 
-/// * `child` - The new node that we are adding to the tree.
-///
-/// # Returns
-///
-/// * `Result<(), String>` - Returns Ok if successful, string if error.
-/// 
-/// # Errors
-/// 
-/// * If Node Hierarchy is not followed, returns an error
-pub fn add_child(parent: &mut TreeNode<Metadata>, child: TreeNode<Metadata>) -> Result<(), String> {
-    match &mut parent.data {
-        Metadata::Directory(parent_directory) => {
-            match &child.data {
-                Metadata::Directory(_) | Metadata::DataBlock(_) => {
-                    return Err("DataBlock cannot be added to a DirectoryMetadata node.".to_string());
-                }
-                Metadata::File(child_file) => {
-                    match child.children.iter().all(|child| matches!(child.data, Metadata::DataBlock(_))) {
-                        true => parent.children.push(child),
-                        false => return Err("FileMetadata nodes can only have DataBlock nodes as children.".to_string()),
-                    }
-                }
-            }
-        }
-        Metadata::File(parent_file) => {
-            match child.data {
-                Metadata::DataBlock(_) => parent.children.push(child),
-                _ => return Err("FileMetadata nodes can only have DataBlock nodes as children.".to_string()),
-            }
-        }
-        Metadata::DataBlock(_) => {
-            return Err("DataBlock nodes cannot have children.".to_string());
-        }
-    }
-
-    Ok(())
-}
-
-
-
