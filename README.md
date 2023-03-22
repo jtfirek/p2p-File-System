@@ -8,13 +8,11 @@ If you are looking through project and see something you would do differently or
 
 The project is organized into several crates, each focusing on a specific aspect of the file system:
 
-## dfs_core
-The core primary data structures and algorithms for the storage layer are stored in the `dfs_core` crate. A genetric tree and dfs implementation are provided here. 
-
 ## dfs_storage
 the `dfs_storage` crate handles the actual storage of data, such as writing to and reading from the disk. This crate manages data persistence, caching, and other low-level storage operations.
 
 The three structs are `FileMetadata`, `DirectoryMetadata`, and `DataBlock`. All structs have a `cid` generated from the data block's content using the SHA2-256 hash function to be used in content based addressing.
+
 
 ### Node Hierarchy and Relationships
 - `DirectoryMetadata` nodes represent directories in the file system. They can have both `FileMetadata` and `DirectoryMetadata` structs as children.

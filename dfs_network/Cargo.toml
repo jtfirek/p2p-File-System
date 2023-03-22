@@ -1,8 +1,11 @@
 [package]
-name = "server_core"
+name = "dfs_network"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+libp2p = { version = "0.42", features = ["tcp-tokio", "dns-tokio", "kad", "ping", "noise", "yamux"] }
+futures = "0.3"
+async-std = "1.10"
