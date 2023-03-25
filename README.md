@@ -31,7 +31,6 @@ The `dfs_api` crate offers a simple and intuitive interface for performing commo
 
 - Creating a new directory with `Directory::new_directory`
 - Creating a new file with `File::new_file`
-- Creating a new data block with `DataBlock::new`
 
 The API also takes care of serialization and deserialization of the structs using the `bincode` library. This ensures that the data can be easily converted to and from binary format, allowing efficient storage and retrieval.
 
