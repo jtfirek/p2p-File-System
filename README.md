@@ -29,8 +29,14 @@ This crate defines three primary structs for representing the file system: `Dire
 
 The `dfs_api` crate offers a simple and intuitive interface for performing common file system operations. The main functionality includes:
 
-- Creating a new directory with `Directory::new_directory`
-- Creating a new file with `File::new_file`
+- Creating a new directory and return the CID `Directory::new_directory`
+- Creating a new file and return the CID with `File::new_file` 
+- Reading a file's content using its CID: `DFSApi::read_file`
+- Listing files and directories in a given directory using its CID: `DFSApi::list_directory`
+- Writing data to a file using its CID: `DFSApi::write_file`
+- Deleting a file using its parent directory's CID: `DFSApi::delete_file`
+- Deleting a directory using its parent directory's CID: `DFSApi::delete_directory`
+
 
 The API also takes care of serialization and deserialization of the structs using the `bincode` library. This ensures that the data can be easily converted to and from binary format, allowing efficient storage and retrieval.
 
