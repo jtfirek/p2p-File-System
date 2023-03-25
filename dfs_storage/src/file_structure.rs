@@ -3,7 +3,7 @@ use multihash::{Code, MultihashDigest};
 use serde::{Deserialize, Serialize};
 use std::time::SystemTime;
 
-pub type CID = Vec<u8>;xs
+pub type CID = Vec<u8>;
 
 // Here I define the structure of each type of block that can be stored in the file system tree
 
@@ -13,7 +13,7 @@ pub enum Metadata {
     DataBlock(DataBlock),
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct Directory {
     pub cid: CID,
     pub directory_name: Option<String>,
@@ -22,7 +22,7 @@ pub struct Directory {
     pub entries: Vec<CID>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct File {
     pub cid: CID,
     pub file_name: Option<String>,
@@ -31,7 +31,7 @@ pub struct File {
     pub data_blocks: Vec<CID>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct DataBlock {
     pub cid: CID,
     pub data: Vec<u8>, // binary data stored in an array of bytes 
@@ -48,8 +48,8 @@ impl Directory {
             size: 0,
             entries: Vec::<CID>::new(),
         };
-        let encoded = bincode::serialize(&directory_metadata).unwrap();
-        let cid = Code::Sha2_256.digest(&encoded).to_bytes();
+        let encoded_bytes = bincode::serialize(&directory_metadata).unwrap();
+        let cid = Code::Sha2_256.digest(&encoded_bytes).to_bytes();
         directory_metadata.cid = cid;
         directory_metadata
     }
@@ -65,8 +65,8 @@ impl File {
             size: data_blocks.len() as u64,
             data_blocks,
         };
-        let encoded = bincode::serialize(&file_metadata).unwrap();
-        let cid = Code::Sha2_256.digest(&encoded).to_bytes();
+        let encoded_bytes = bincode::serialize(&file_metadata).unwrap();
+        let cid = Code::Sha2_256.digest(&encoded_bytes).to_bytes();
         file_metadata.cid = cid;
         file_metadata
     }
@@ -74,6 +74,7 @@ impl File {
 
 impl DataBlock {
     pub fn new(data: &[u8]) -> Self {
+        // unlike others, hash the data directly
         let cid = Code::Sha2_256.digest(data).to_bytes();
         DataBlock {
             cid,

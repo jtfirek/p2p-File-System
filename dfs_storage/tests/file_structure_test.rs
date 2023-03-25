@@ -1,73 +1,94 @@
 
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-//     use std::time::{Duration, SystemTime};
+use dfs_storage::{
+    Directory, File, DataBlock, Metadata,
+};
+use bincode;
+use multihash::{Code, MultihashDigest};
 
-//     #[test]
-//     fn test_directory_creation() {
-//         let directory_name = Some(String::from("test_directory"));
-//         let directory = Metadata::new_directory(directory_name.clone());
+// Testing the creation of each type of block
+#[test]
+fn test_directory_creation() {
+    let directory_name = Some("test_directory".to_string());
+    let directory = Directory::new_directory(directory_name.clone());
+    assert_eq!(directory.directory_name, directory_name);
+    assert_eq!(directory.size, 0);
+    assert!(directory.entries.is_empty());
+    // test if the CID was actually calculated
+    assert!(directory.cid.len() > 0);
+}
 
-//         if let Metadata::Directory {
-//             cid,
-//             directory_name: dir_name,
-//             created,
-//             size,
-//             entries,
-//         } = directory
-//         {
-//             assert!(dir_name.is_some());
-//             assert_eq!(dir_name.unwrap(), "test_directory");
-//             assert_eq!(size, 0);
-//             assert!(entries.is_empty());
+#[test]
+fn test_file_creation() {
+    let file_name = Some("test_file.txt".to_string());
+    let data_blocks = Vec::new();
+    let file = File::new_file(file_name.clone(), data_blocks.clone());
+    assert_eq!(file.file_name, file_name);
+    assert_eq!(file.size, 0);
+    assert_eq!(file.data_blocks, data_blocks);
+}
 
-//             let now = SystemTime::now();
-//             let duration = now.duration_since(created).unwrap();
-//             assert!(duration < Duration::from_secs(1));
-//         } else {
-//             panic!("Expected Metadata::Directory");
-//         }
-//     }
+#[test]
+fn test_data_block_creation() {
+    let data = b"Hello, world!";
+    let data_block = DataBlock::new(data);
+    assert_eq!(data_block.data, data.to_vec());
+}
 
-//     #[test]
-//     fn test_file_creation() {
-//         let file_name = Some(String::from("test_file"));
-//         let data_blocks = vec![vec![1, 2, 3, 4], vec![5, 6, 7, 8]];
-//         let cids: Vec<CID> = data_blocks
-//             .iter()
-//             .map(|data| Code::Sha2_256.digest(data).to_bytes())
-//             .collect();
+// Testing the serialization and deserialization of each type of block and the PartialEq trait
+#[test]
+fn test_directory_serialization_deserialization() {
+    let directory_name = Some("test_directory".to_string());
+    let directory = Directory::new_directory(directory_name.clone());
+    let encoded = bincode::serialize(&directory).unwrap();
+    let decoded: Directory = bincode::deserialize(&encoded).unwrap();
+    assert_eq!(directory, decoded);
+}
+#[test]
+fn test_file_serialization_deserialization() {
+    let file_name = Some("test_file.txt".to_string());
+    let data_blocks = Vec::new();
+    let file = File::new_file(file_name.clone(), data_blocks.clone());
+    let encoded = bincode::serialize(&file).unwrap();
+    let decoded: File = bincode::deserialize(&encoded).unwrap();
+    assert_eq!(file, decoded);
+}
+#[test]
+fn test_data_block_cid() {
+    let data = b"Hello, world!";
+    let data_block = DataBlock::new(data);
+    let cid = Code::Sha2_256.digest(data).to_bytes();
+    assert_eq!(data_block.cid, cid);
+}
 
-//         let file = Metadata::new_file(file_name.clone(), cids.clone());
+#[test]
+fn test_metadata_enum() {
+    let directory_name = Some("test_directory".to_string());
+    let directory = Directory::new_directory(directory_name.clone());
+    let file_name = Some("test_file.txt".to_string());
+    let data_blocks = Vec::new();
+    let file = File::new_file(file_name.clone(), data_blocks.clone());
+    let data = b"Hello, world!";
+    let data_block = DataBlock::new(data);
 
-//         if let Metadata::File {
-//             cid,
-//             file_name: f_name,
-//             created,
-//             size,
-//             data_blocks: file_data_blocks,
-//         } = file
-//         {
-//             assert!(f_name.is_some());
-//             assert_eq!(f_name.unwrap(), "test_file");
-//             assert_eq!(size, data_blocks.len() as u64);
-//             assert_eq!(file_data_blocks, cids);
+    let metadata_directory = Metadata::Directory(directory);
+    let metadata_file = Metadata::File(file);
+    let metadata_data_block = Metadata::DataBlock(data_block);
 
-//             let now = SystemTime::now();
-//             let duration = now.duration_since(created).unwrap();
-//             assert!(duration < Duration::from_secs(1));
-//         } else {
-//             panic!("Expected Metadata::File");
-//         }
-//     }
+    match metadata_directory {
+        Metadata::Directory(dir) => assert_eq!(dir.directory_name, directory_name),
+        _ => panic!("Expected a Metadata::Directory variant"),
+    }
 
-//     #[test]
-//     fn test_data_block_creation() {
-//         let data = vec![1, 2, 3, 4, 5, 6, 7, 8];
-//         let data_block = DataBlock::new(&data);
+    match metadata_file {
+        Metadata::File(f) => {
+            assert_eq!(f.file_name, file_name);
+            assert_eq!(f.data_blocks, data_blocks);
+        }
+        _ => panic!("Expected a Metadata::File variant"),
+    }
 
-//         assert_eq!(data_block.cid, Code::Sha2_256.digest(&data).to_bytes());
-//         assert_eq!(data_block.data, data);
-//     }
-// }
+    match metadata_data_block {
+        Metadata::DataBlock(db) => assert_eq!(db.data, data.to_vec()),
+        _ => panic!("Expected a Metadata::DataBlock variant"),
+    }
+}
