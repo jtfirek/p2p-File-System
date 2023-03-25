@@ -27,7 +27,7 @@ This crate defines three primary structs for representing the file system: `Dire
 
 ### High-level API
 
-The `dfs_api` crate offers a simple and intuitive interface for performing common file system operations. The main functionality includes:
+The `dfs_api` crate offers a simple and intuitive interface for performing common file system operations using CID for the file or directory The main functionality includes:
 
 - Creating a new directory and return the CID `Directory::new_directory`
 - Creating a new file and return the CID with `File::new_file` 
