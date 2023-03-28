@@ -42,9 +42,10 @@ The `dfs_api` crate offers a simple and intuitive interface for performing commo
 
 The API also takes care of serialization and deserialization of the structs using the `bincode` library. This ensures that the data can be easily converted to and from binary format, allowing efficient storage and retrieval.
 
+## dfs_network
 
+Currency using libp2p to complete this crate. The `dfs_network` will manage the networking aspect of the file system, using libp2p for peer discovery, connection establishment, and data exchange between peers via a distributed hash table.
 
-- `dfs_network`: Manages the networking aspect of the file system, using libp2p for peer discovery, connection establishment, and data exchange between peers.
 ## Getting Started
 
 To build the project, ensure you have Rust and Cargo installed on your system. Then, navigate to the root directory of the workspace and run the following command:
