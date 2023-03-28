@@ -1,10 +1,11 @@
 # IPFSish project 
 
-Implementing a distributed file system like IPFS using rust and libp2p to learn more about how to actually build peer to peer networks.
+Implementing a p2p distributed file system like IPFS using rust and libp2p to learn more about how to actually build peer to peer networks. This project is a file system that uses content-based addressing to store and retrieve data. The system uses a distributed hash table (DHT) to store the data blocks and metadata, and the CID (Content Identifier) of each block to efficiently retrieve the data across the network. 
 
+Example of a user retrieving a file via the `File::new_file` API
 ![Alt text](images/diagram1.png)
 
-If you are looking through project and see something you would do differently or things I could to keep building on this project please make a github issue so I can keep learning!
+If you are looking through project and see something you would do differently or things I could to keep building on this project please make a github issue so I can keep learning! Especially if you have any ideas on how I could provide support for path based addressing in an efficient and decentralized manner as I am still trying to figure this part out.
 
 # Project Structure
 
