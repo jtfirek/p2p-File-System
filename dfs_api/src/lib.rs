@@ -4,7 +4,7 @@ use dfs_storage::CID;
 
 
 pub struct DFSApi {
-    // The file_system field should be replaced with your actual file_system implementation
+    /// include DHS here
     file_system: (),
 }
 
